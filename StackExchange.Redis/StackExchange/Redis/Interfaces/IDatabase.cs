@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net;
 
@@ -1612,5 +1612,41 @@ namespace StackExchange.Redis
         /// <returns>The length of the string after it was modified by the command.</returns>
         /// <remarks>https://redis.io/commands/setrange</remarks>
         RedisValue StringSetRange(RedisKey key, long offset, RedisValue value, CommandFlags flags = CommandFlags.None);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="streamName"></param>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <param name="flags"></param>
+        /// <returns></returns>
+        RedisValue XAdd(string streamName, RedisKey key, RedisValue value, CommandFlags flags = CommandFlags.None);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="streamName"></param>
+        /// <returns></returns>
+        long XLen(string streamName);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="streamName"></param>
+        /// <param name="key"></param>
+        /// <param name="flags"></param>
+        /// <returns></returns>
+        RedisValue XRange(string streamName, RedisKey key, CommandFlags flags = CommandFlags.None);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="streamName"></param>
+        /// <param name="key"></param>
+        /// <param name="maxResults"></param>
+        /// <param name="flags"></param>
+        /// <returns></returns>
+        RedisValue XRead(string streamName, RedisKey key, long maxResults, CommandFlags flags = CommandFlags.None);
     }
 }

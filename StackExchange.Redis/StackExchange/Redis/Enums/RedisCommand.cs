@@ -163,6 +163,11 @@
 
         WATCH,
 
+        XADD,
+        XLEN,
+        XREAD,
+        XRANGE,
+
         ZADD,
         ZCARD,
         ZCOUNT,

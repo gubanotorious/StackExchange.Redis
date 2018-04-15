@@ -2362,6 +2362,33 @@ namespace StackExchange.Redis
             return ExecuteAsync(msg, ResultProcessor.Int64);
         }
 
+        public RedisValue XAdd(string streamName, RedisKey key, RedisValue value, CommandFlags flags = CommandFlags.None)
+        {
+            //if (key == null)
+            //    throw new ArgumentNullException(nameof(key));
+
+            //var msg = Message.Create(Database, flags, RedisCommand.XADD,, keys);
+            //return ExecuteSync(msg, ResultProcessor.RedisValueArray);
+
+
+            throw new NotImplementedException();
+        }
+
+        public long XLen(string streamName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public RedisValue XRange(string streamName, RedisKey key, CommandFlags flags = CommandFlags.None)
+        {
+            throw new NotImplementedException();
+        }
+
+        public RedisValue XRead(string streamName, RedisKey key, long maxResults, CommandFlags flags = CommandFlags.None)
+        {
+            throw new NotImplementedException();
+        }
+
         internal class ScanIterator<T> : CursorEnumerable<T>
         {
             private readonly RedisKey key;

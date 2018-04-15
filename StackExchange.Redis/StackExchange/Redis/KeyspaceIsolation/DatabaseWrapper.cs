@@ -732,6 +732,26 @@ namespace StackExchange.Redis.KeyspaceIsolation
         {
             Inner.Quit(flags);
         }
+
+        public RedisValue XAdd(string streamName, RedisKey key, RedisValue value, CommandFlags flags = CommandFlags.None)
+        {
+            throw new NotImplementedException();
+        }
+
+        public long XLen(string streamName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public RedisValue XRange(string streamName, RedisKey key, CommandFlags flags = CommandFlags.None)
+        {
+            throw new NotImplementedException();
+        }
+
+        public RedisValue XRead(string streamName, RedisKey key, long maxResults, CommandFlags flags = CommandFlags.None)
+        {
+            throw new NotImplementedException();
+        }
 #endif
     }
 }
