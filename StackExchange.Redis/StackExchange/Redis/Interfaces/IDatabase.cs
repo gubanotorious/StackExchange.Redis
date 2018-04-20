@@ -1614,39 +1614,42 @@ namespace StackExchange.Redis
         RedisValue StringSetRange(RedisKey key, long offset, RedisValue value, CommandFlags flags = CommandFlags.None);
 
         /// <summary>
-        /// 
+        /// Adds an element to the specified stream
         /// </summary>
-        /// <param name="streamName"></param>
-        /// <param name="key"></param>
+        /// <param name="streamName">Name of the stream</param>
+        /// <param name="id">The id of the inserted element, "*" = auto generated</param>
         /// <param name="value"></param>
-        /// <param name="flags"></param>
+        /// <param name="flags">The flags to use for this operation.</param>
         /// <returns></returns>
-        RedisValue XAdd(string streamName, RedisKey key, RedisValue value, CommandFlags flags = CommandFlags.None);
+        RedisValue XAdd(RedisValue streamName, RedisValue id, RedisValue value, CommandFlags flags = CommandFlags.None);
+
 
         /// <summary>
-        /// 
+        /// Retrieves the number of elements in the stream
         /// </summary>
-        /// <param name="streamName"></param>
+        /// <param name="streamName">Name of the stream</param>
+        /// <param name="flags">The flags to use for this operation.</param>
         /// <returns></returns>
-        long XLen(string streamName);
+        long XLen(RedisValue streamName, CommandFlags flags = CommandFlags.None);
 
         /// <summary>
-        /// 
+        /// Gets a range of elements from the stream
         /// </summary>
-        /// <param name="streamName"></param>
-        /// <param name="key"></param>
-        /// <param name="flags"></param>
+        /// <param name="streamName">Name of the stream</param>
+        /// <param name="start">Beginning of the range (can be id of the entry or timestamp in ms, "-" = min)</param>
+        /// <param name="end">End of the range (can be id of the entry or timestamp in ms, "+" = max)</param>
+        /// <param name="maxResults">Maximum number of results to return, -1 = all</param>
+        /// <param name="flags">The flags to use for this operation</param>
         /// <returns></returns>
-        RedisValue XRange(string streamName, RedisKey key, CommandFlags flags = CommandFlags.None);
+        RedisValue[] XRange(RedisValue streamName, RedisValue start, RedisValue end, long maxResults = -1, CommandFlags flags = CommandFlags.None);
 
         /// <summary>
-        /// 
+        /// Retrieves a single element in the stream by id
         /// </summary>
-        /// <param name="streamName"></param>
-        /// <param name="key"></param>
-        /// <param name="maxResults"></param>
-        /// <param name="flags"></param>
+        /// <param name="streamName">Name of the stream</param>
+        /// <param name="id">The id of the stream entry to read</param>
+        /// <param name="flags">The flags to use for this operation</param>
         /// <returns></returns>
-        RedisValue XRead(string streamName, RedisKey key, long maxResults, CommandFlags flags = CommandFlags.None);
+        RedisValue[] XRead(RedisValue streamName, RedisValue id, CommandFlags flags = CommandFlags.None);
     }
 }

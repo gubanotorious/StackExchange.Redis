@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace StackExchange.Redis.KeyspaceIsolation
 {
@@ -722,6 +723,26 @@ namespace StackExchange.Redis.KeyspaceIsolation
             return Inner.SortedSetScan(ToInner(key), pattern, pageSize, cursor, pageOffset, flags);
         }
 
+        public RedisValue XAdd(RedisValue streamName, RedisValue id, RedisValue value, CommandFlags flags = CommandFlags.None)
+        {
+            throw new NotImplementedException();
+        }
+
+        public long XLen(RedisValue streamName, CommandFlags flags = CommandFlags.None)
+        {
+            throw new NotImplementedException();
+        }
+
+        public RedisValue[] XRange(RedisValue streamName, RedisValue start, RedisValue end, long maxResults = -1, CommandFlags flags = CommandFlags.None)
+        {
+            throw new NotImplementedException();
+        }
+
+        public RedisValue[] XRead(RedisValue streamName, RedisValue id, CommandFlags flags = CommandFlags.None)
+        {
+            throw new NotImplementedException();
+        }
+
 #if DEBUG
         public string ClientGetName(CommandFlags flags = CommandFlags.None)
         {
@@ -731,26 +752,6 @@ namespace StackExchange.Redis.KeyspaceIsolation
         public void Quit(CommandFlags flags = CommandFlags.None)
         {
             Inner.Quit(flags);
-        }
-
-        public RedisValue XAdd(string streamName, RedisKey key, RedisValue value, CommandFlags flags = CommandFlags.None)
-        {
-            throw new NotImplementedException();
-        }
-
-        public long XLen(string streamName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public RedisValue XRange(string streamName, RedisKey key, CommandFlags flags = CommandFlags.None)
-        {
-            throw new NotImplementedException();
-        }
-
-        public RedisValue XRead(string streamName, RedisKey key, long maxResults, CommandFlags flags = CommandFlags.None)
-        {
-            throw new NotImplementedException();
         }
 #endif
     }

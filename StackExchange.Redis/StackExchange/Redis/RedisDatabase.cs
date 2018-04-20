@@ -2362,31 +2362,88 @@ namespace StackExchange.Redis
             return ExecuteAsync(msg, ResultProcessor.Int64);
         }
 
-        public RedisValue XAdd(string streamName, RedisKey key, RedisValue value, CommandFlags flags = CommandFlags.None)
+        public RedisValue XAdd(RedisValue streamName, RedisValue id, RedisValue value, CommandFlags flags)
         {
-            //if (key == null)
-            //    throw new ArgumentNullException(nameof(key));
+            if (id.IsNullOrEmpty)
+                id = "*"; //Auto generate id
 
-            //var msg = Message.Create(Database, flags, RedisCommand.XADD,, keys);
-            //return ExecuteSync(msg, ResultProcessor.RedisValueArray);
-
-
-            throw new NotImplementedException();
+            var msg = Message.Create(Database, flags, RedisCommand.XADD, streamName, id, value);
+            return ExecuteSync(msg, ResultProcessor.RedisValue);
         }
 
-        public long XLen(string streamName)
+        public async Task<RedisValue> XAddAsync(RedisValue streamName, RedisValue id, RedisValue value, CommandFlags flags = CommandFlags.None)
         {
-            throw new NotImplementedException();
+            if (id.IsNullOrEmpty)
+                id = "*"; //Auto generate id
+
+            var msg = Message.Create(Database, flags, RedisCommand.XADD, streamName, id,  value);
+            return await ExecuteAsync(msg, ResultProcessor.RedisValue);
         }
 
-        public RedisValue XRange(string streamName, RedisKey key, CommandFlags flags = CommandFlags.None)
+        public long XLen(RedisValue streamName, CommandFlags flags = CommandFlags.None)
         {
-            throw new NotImplementedException();
+            var msg = Message.Create(Database, flags, RedisCommand.XLEN, streamName);
+            return ExecuteSync(msg, ResultProcessor.Int64);
         }
 
-        public RedisValue XRead(string streamName, RedisKey key, long maxResults, CommandFlags flags = CommandFlags.None)
+        public RedisValue[] XRange(RedisValue streamName, RedisValue start, RedisValue end, long maxResults, CommandFlags flags)
         {
-            throw new NotImplementedException();
+            if (start.IsNullOrEmpty)
+                start = "-"; //Minimum value
+            if (end.IsNullOrEmpty)
+                end = "+"; //Maxmimum value
+
+            Message msg = null;
+            if (maxResults > 0)
+            {
+                RedisValue count = "COUNT";
+                msg = Message.Create(Database, flags, RedisCommand.XRANGE, streamName, start, end, count, maxResults);
+            }
+            else
+                msg = Message.Create(Database, flags, RedisCommand.XRANGE, streamName, start, end);
+
+            return ExecuteSync(msg, ResultProcessor.RedisValueArray);
+        }
+
+        public async Task<RedisValue[]> XRangeAsync(RedisValue streamName, RedisValue start, RedisValue end, long maxResults, CommandFlags flags = CommandFlags.None)
+        {
+            if (start.IsNullOrEmpty)
+                start = "-"; //Minimum value
+            if (end.IsNullOrEmpty)
+                end = "+"; //Maxmimum value
+
+            Message msg = null;
+            if (maxResults > 0)
+            {
+                RedisValue count = "COUNT";
+                msg = Message.Create(Database, flags, RedisCommand.XRANGE, streamName, start, end, count, maxResults);
+            }             
+            else
+                msg = Message.Create(Database, flags, RedisCommand.XRANGE, streamName, start, end);
+
+            return await ExecuteAsync(msg, ResultProcessor.RedisValueArray);
+        }
+
+        public RedisValue[] XRead(RedisValue streamName, RedisValue id, CommandFlags flags)
+        {
+            //Hacky
+            RedisValue streamsCmd = "STREAMS";
+            RedisValue count = "COUNT";
+            RedisValue limit = 100;
+
+            var msg = Message.Create(Database, flags, RedisCommand.XREAD, count, limit, streamsCmd, streamName, id);
+            return ExecuteSync(msg, ResultProcessor.RedisValueArray);
+        }
+
+        public async Task<RedisValue[]> XReadAsync(RedisValue streamName, RedisValue id, CommandFlags flags = CommandFlags.None)
+        {
+            //Hacky
+            RedisValue streamsCmd = "STREAMS";
+            RedisValue count = "COUNT";
+            RedisValue limit = 100;
+
+            var msg = Message.Create(Database, flags, RedisCommand.XREAD, count, limit, streamsCmd, streamName, id);
+            return await ExecuteAsync(msg, ResultProcessor.RedisValueArray);
         }
 
         internal class ScanIterator<T> : CursorEnumerable<T>

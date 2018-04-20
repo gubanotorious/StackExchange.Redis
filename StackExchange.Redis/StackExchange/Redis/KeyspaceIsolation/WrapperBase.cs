@@ -845,5 +845,20 @@ namespace StackExchange.Redis.KeyspaceIsolation
             // create as a delegate when first required, then re-use
             return mapFunction ?? (mapFunction = new Func<RedisKey, RedisKey>(ToInner));
         }
+
+        public Task<RedisValue> XAddAsync(RedisValue streamName, RedisValue id, RedisValue value, CommandFlags flags = CommandFlags.None)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<RedisValue[]> XRangeAsync(RedisValue streamName, RedisValue start, RedisValue end, long maxResults = -1, CommandFlags flags = CommandFlags.None)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<RedisValue[]> XReadAsync(RedisValue streamName, RedisValue id, CommandFlags flags = CommandFlags.None)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

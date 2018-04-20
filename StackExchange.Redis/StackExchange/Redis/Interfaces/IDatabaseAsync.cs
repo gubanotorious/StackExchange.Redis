@@ -1522,5 +1522,35 @@ namespace StackExchange.Redis
         /// <returns>The length of the string after it was modified by the command.</returns>
         /// <remarks>https://redis.io/commands/setrange</remarks>
         Task<RedisValue> StringSetRangeAsync(RedisKey key, long offset, RedisValue value, CommandFlags flags = CommandFlags.None);
+
+        /// <summary>
+        /// Adds an element to the specified stream
+        /// </summary>
+        /// <param name="streamName">Name of the stream</param>
+        /// <param name="id">The id of the inserted element, "*" = auto generated</param>
+        /// <param name="value"></param>
+        /// <param name="flags">The flags to use for this operation.</param>
+        /// <returns></returns>
+        Task<RedisValue> XAddAsync(RedisValue streamName, RedisValue id, RedisValue value, CommandFlags flags = CommandFlags.None);
+
+        /// <summary>
+        /// Gets a range of elements from the stream
+        /// </summary>
+        /// <param name="streamName">Name of the stream</param>
+        /// <param name="start">Beginning of the range (can be id of the entry or timestamp in ms, "-" = min)</param>
+        /// <param name="end">End of the range (can be id of the entry or timestamp in ms, "+" = max)</param>
+        /// <param name="maxResults">Maximum number of results to return, -1 = all</param>
+        /// <param name="flags">The flags to use for this operation</param>
+        /// <returns></returns>
+        Task<RedisValue[]> XRangeAsync(RedisValue streamName, RedisValue start, RedisValue end, long maxResults = -1, CommandFlags flags = CommandFlags.None);
+
+        /// <summary>
+        /// Retrieves a single element in the stream by id
+        /// </summary>
+        /// <param name="streamName">Name of the stream</param>
+        /// <param name="id">The id of the stream entry to read</param>
+        /// <param name="flags">The flags to use for this operation</param>
+        /// <returns></returns>
+        Task<RedisValue[]> XReadAsync(RedisValue streamName, RedisValue id, CommandFlags flags = CommandFlags.None);
     }
 }
